@@ -1,0 +1,9 @@
+8
+(\lnot (\vee (\lnot kl65) (\wedge (\lnot a9) ty65)))
+(\lnot(\lnot(\lnot l0))(\lnot lo6))
+(\lnot a12)
+(\lnot (\wedge y6 u7)
+(\lnot(\lnot g))
+(\rightarrow (T) F)
+T
+TF
