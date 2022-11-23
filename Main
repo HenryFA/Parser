@@ -1,0 +1,249 @@
+#Pedro Henrique Faria Amadeu
+
+import re
+from pylatexenc.latex2text import LatexNodes2Text
+'''
+ENUNCIADO
+Para  obter  os  pontos  relativos  a  este  trabalho,  você  deverá  fazer  um  programa,  usando  a
+linguagem de programação que desejar, que seja capaz de validar expressões de lógica propisicional
+escritas em latex e definir se são expressões gramaticalmente corretas. Você validará apenas a forma
+da expressão (sintaxe).
+A entrada será fornecida por um arquivo de textos que será carregado em linha de comando,
+com a seguinte formatação:
+1. Na primeira linha deste arquivo existe um número inteiro que informa quantas expressões
+lógicas estão no arquivo.
+2. Cada uma das linhas seguintes contém uma expressão lógica que deve ser validada.
+A saída do seu programa será no terminal padrão do sistema e constituirá de uma linha de saída
+para cada expressão lógica de entrada contendo ou a palavra valida ou a palavra inválida e nada mais.
+Gramática:
+Formula=Constante|Proposicao|FormulaUnaria|FormulaBinaria.
+Constante="T"|"F".
+Proposicao=[a−z0−9]+
+FormulaUnaria=AbreParen OperadorUnario Formula FechaParen
+FormulaBinaria=AbreParen OperatorBinario Formula Formula FechaParen
+AbreParen="("
+FechaParen=")"
+OperatorUnario="¬"
+OperatorBinario="∨"|"∧"|"→"|"↔"
+Cada  expressão  lógica  avaliada  pode  ter  qualquer  combinação  das  operações  de  negação, conjunção, disjunção, implicação e bi-implicação sem limites na combiação de preposições e operações.
+Os valores lógicos True e False estão representados na gramática e, como tal, podem ser usados em qualquer expressão de entrada.
+Para  validar  seu  trabalho,  você  deve  incluir  no  repl.it,  no  mínimo  três  arquivos  contendo números  diferentes  de  expressões  proposicionais.  O  professor  irá  incluir  um  arquivo  de  testes  extra para validar seu trabalho. Para isso, caberá ao professor incluir o arquivo no seu repl.it e rodar o seu programa carregando o arquivo de testes.
+'''
+
+#menu para que o usuario possa escolher o arquivo
+print('Arquivos existentes: teste1, teste2, teste3\n')
+print(
+  '''Arquivo "test4" é feito para ser alterado pelo professor em caso de teste manual(lembre de botar o numero de linhas a serem lidas como primeiro parametro na linha inicial do arquivo). Operadores e Caracteres para serem usados:
+
+Abre-Parenteses = (  
+Fecha-Parenteses = )
+Negação = \lnot
+E lógico = \wedge
+OU lógico = \ vee
+Implicação = \ rightarrow
+Implicação Dubla = \leftrightarrow
+''')
+opcao = str(input('Escolha o nome do arquivo que será lido: '))
+
+#transforma opção no nome do arquivo
+arquivo = open(opcao + ".txt", 'r')
+linha = int(arquivo.readline())
+
+
+#encontra \n no final das sentenças
+def pularlinha(sentenca):
+  if sentenca.count('\n') != 0:
+    sentenca = re.sub(r'\n', '', sentenca)
+  else:
+    pass
+
+  return sentenca
+
+
+# Caracteres especiais para as formulas
+abre_paren = '('
+fecha_paren = ')'
+operadores_binarios = ('∧', '↔', '∨', '→')
+operador_unario = '¬'
+const = ('T', 'F')
+
+
+def proposicao(char):
+  # função para caracterizar e delimitar as proposições de acordo com a gramática.
+  lista = list(map(chr, range(97, 123)))
+  lista_num = list(map(chr, range(48, 58)))
+
+  if char in lista:
+    return True
+  elif char in lista_num:
+    return True
+  else:
+    return False
+
+
+  # verifica se ha ou não operador na formula
+def formula_unaria(char):
+  if char == operador_unario:
+    if char in w1[-2]:
+      return False
+    else:
+      return True
+
+
+def formula_binaria(char):
+  if char in operadores_binarios:
+    if char in w1[-2]:
+      return False
+    else:
+      return True
+
+
+#função para analisar e validar as sentenças
+def comportamento(w1, state):
+  counts = 0
+  count = None
+
+  for i, char in enumerate(w1):
+    if sentenca == "\n":
+      exit()
+      return True
+    if state == "CkBrackets":
+      if char == abre_paren:
+        state = "CkOperator"
+        counts += 1
+        continue
+      elif char in const:
+        if len(w1) == 1:
+          return True
+        else:
+          return False
+      else:
+        return False
+
+    if state == "CkOperator":
+      if formula_unaria(char):
+        state = "Unario"
+        count = True
+        continue
+      elif formula_binaria(char):
+        state = "Binario"
+        count = False
+        continue
+      else:
+        return False
+
+    if state == "Unario":
+
+      if char == abre_paren:
+        state = "CkOperator"
+        counts += 1
+        continue
+
+      if proposicao(char):
+        state = "E1"
+        continue
+
+      if char == fecha_paren:
+        state = "CkFechamento"
+        counts -= 1
+        continue
+
+      if char in const:
+        state = "CkFechamento"
+        continue
+      else:
+        return False
+
+    if state == "Binario":
+      if char == abre_paren:
+        state = "CkOperator"
+        counts += 1
+        continue
+
+      if proposicao(char):
+        state = "E1"
+        continue
+
+      if char == fecha_paren:
+        state = "CkFechamento"
+        counts -= 1
+        continue
+
+      if char in const:
+        state = "Binario"
+        continue
+
+    if state == "E1":
+
+      if char != fecha_paren:
+
+        if char not in list(map(chr, range(48, 58))):
+
+          if char in list(map(chr, range(97, 123))):
+            if count is True and w[i].isspace() is True:
+              return False
+            continue
+          else:
+            return False
+        else:
+          state = "E2"
+      else:
+        state = "CkFechamento"
+
+    if state == "E2":
+      if char != fecha_paren:
+        if char not in list(map(chr, range(97, 123))):
+          if list(map(chr, range(48, 58))):
+            continue
+          else:
+            return False
+        else:
+          state = "E1"
+      else:
+        state = "CkFechamento"
+
+    if state == "CkFechamento":
+      if char == abre_paren:
+        state = "CkOperator"
+        counts += 1
+        continue
+      elif char == fecha_paren:
+        state = "CkFechamento"
+        count = None
+        counts -= 1
+        if char in w1[-1]:
+          if counts == 0:
+            return True
+        else:
+          continue
+
+      elif proposicao(char):
+        state = "E1"
+
+      else:
+        return False
+
+
+while linha > 0:
+
+  state = "CkBrackets"
+  counts = 0
+  sentenca = arquivo.readline()
+  w = LatexNodes2Text().latex_to_text(pularlinha(sentenca))
+  w1 = re.findall(r'\S', w)
+  t = w1.count(operador_unario)
+  t1 = w1.count(abre_paren)
+  t2 = w1.count(fecha_paren)
+  t3 = w1.count(operadores_binarios)
+  if counts == 0 and comportamento(w1, state):
+    if t > 3:
+      if t1 and t2 == t and t3 == 0:
+        print("Invalida")
+    else:
+      print("Valida")
+  else:
+    print("Invalida")
+
+  linha -= 1
+
+print("\nProcesso finalizado com sucesso")
