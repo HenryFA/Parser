@@ -1,0 +1,8 @@
+7
+(\wedge (\rightarrow (\lnot a) (\lnot (\wedge a y))) (\vee a b))
+(\vee a b) \wedge
+(\lnot az)
+(\leftrightarrow (\lnot a b) b)
+(\lnot (\vee a b))
+(\lnot p9)
+(\lnot T)lk
