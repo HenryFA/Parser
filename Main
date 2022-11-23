@@ -31,9 +31,9 @@ Para  validar  seu  trabalho,  você  deve  incluir  no  repl.it,  no  mínimo  
 '''
 
 #menu para que o usuario possa escolher o arquivo
-print('Arquivos existentes: teste1, teste2, teste3\n')
+print('Arquivos existentes: arquivo1, arquivo2, arquivo3\n')
 print(
-  '''Arquivo "test4" é feito para ser alterado pelo professor em caso de teste manual(lembre de botar o numero de linhas a serem lidas como primeiro parametro na linha inicial do arquivo). Operadores e Caracteres para serem usados:
+  '''Arquivo "arquivo4" é feito para ser alterado pelo professor em caso de teste manual(lembre de botar o numero de linhas a serem lidas como primeiro parametro na linha inicial do arquivo). Operadores e Caracteres para serem usados:
 
 Abre-Parenteses = (  
 Fecha-Parenteses = )
