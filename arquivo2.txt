@@ -1,0 +1,8 @@
+7
+(\lnot aa36)
+(\lnot \lnot poi8)
+(\lnot (\lnot le8)
+(\lnot T)
+(\wedge (\rightarrow (\lnot a) (\lnot (\wedge a y))) (\vee a b))
+(\wedge (\rightarrow (\lnot a) (\lnot (\wedge a y)) (\vee a b))
+(\lnot(\lnot(\lnot k10)))
